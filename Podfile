@@ -6,6 +6,7 @@ target 'Pokedex' do
   use_frameworks!
 
   # Pods for Pokedex
+	pod 'Alamofire', '~> 4.4'
 
   target 'PokedexTests' do
     inherit! :search_paths
