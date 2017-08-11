@@ -25,13 +25,8 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         collection.delegate = self
         collection.dataSource = self
         searchBar.delegate = self
-        let close = UITapGestureRecognizer(target: self, action:  #selector(self.resign (_:)))
-        self.view.addGestureRecognizer(close)
+        
         parsePokemonCSV()
-    }
-    
-    @IBAction func resign(_ sender: Any) {
-        view.endEditing(true)
     }
     
     func parsePokemonCSV(){
@@ -76,7 +71,14 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        //
+        let poke: Pokemon!
+        if inSearchMode {
+            poke = filteredPokemon[indexPath.row]
+        } else {
+            poke = pokemon[indexPath.row]
+        }
+        performSegue(withIdentifier: "DetailPokemonVC", sender: poke)
+
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -118,11 +120,15 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         }
     }
 
-    @IBAction func musicBtnPressed(_ sender: Any) {
-        
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "DetailPokemonVC" {
+            if let destination = segue.destination as? DetailPokemonVC {
+                if let poke = sender as? Pokemon {
+                    destination.pokemon = poke
+                }
+            }
+        }
     }
-
-    
     
     
     
